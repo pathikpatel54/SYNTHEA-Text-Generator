@@ -1,0 +1,107 @@
+{
+    "vars": {
+        "DCT": "2021-05-18",
+        "HOSPITAL_NAME": "Family Wellness Center",
+        "HOSPITAL_PHONE": "+1(222)333-4444",
+        "DBHOST": "oracle2.cci.drexel.edu",
+        "DBSID": "ORCL",
+        "GENDER" : {"F": "female", "M": "male"},
+        "MARITAL" : {"M": "married", "S": "single"}
+    },
+    "templates": {
+        "DOCUMENT_HEADER": [
+            "{:HOSPITAL_NAME:}\n{:HOSPITAL_PHONE:}\n\n{:DCT:}\n\n",
+            "MEDICAL REPORT\n\n",
+            "PATIENT REPORT\n\n",
+            "DISCHARGE REPORT\n================\n\n"
+        ],
+        "DOCUMENT_FOOTER": [
+            "\n\nFeel free to contact the Admin office if you have any questions."
+        ],
+        "PATIENT_DEMOGRAPHICS": {
+            "part_1": [
+                "{:FIRST:} {:LAST:} is a {:AGE:}-year-old {:GENDER:} residing at {:ADDRESS:} {:CITY:}",
+                "{:FIRST:} {:LAST:}, who is {:AGE:} years old, is a {:GENDER:} living at {:ADDRESS:} {:CITY:}",
+                "{:FIRST:} {:LAST:} is a {:GENDER:} of {:AGE:} who lives at {:ADDRESS:} {:CITY:}",
+                "{:FIRST:} {:LAST:}, a {:GENDER:} of {:AGE:}, resides at {:ADDRESS:} {:CITY:}",
+                "{:AGE:}-year-old {:GENDER:} named {:FIRST:} {:LAST:} lives at {:ADDRESS:} {:CITY:}",
+                "The patient, {:FIRST:} {:LAST:}, is a {:AGE:}-year-old {:GENDER:} who lives at {:ADDRESS:} {:CITY:}",
+                "{:FIRST:} {:LAST:}, a {:AGE:}-year-old {:GENDER:}, resides at {:ADDRESS:} {:CITY:}",
+                "{:FIRST:} {:LAST:}, {:AGE:} years old and a {:GENDER:}, lives at {:ADDRESS:} {:CITY:}",
+                "{:AGE:}-year-old {:GENDER:} named {:FIRST:} {:LAST:} lives at {:ADDRESS:} {:CITY:}",
+                "{:FIRST:} {:LAST:}, a {:GENDER:}, is {:AGE:} years old and resides at {:ADDRESS:} {:CITY:}"
+            ],
+            "part_2": [
+                ". Their marital status is {:MARITAL:}",
+                ". They are {:MARITAL:}"
+            ],
+            "part_3": [
+                ", and they identify as {:RACE:}.",
+                ", and consider themselves to be {:RACE:}."
+            ]
+        },
+        "FEMALE_PATIENT": [ "\n\n*** Make sure to contact office in case of pregnancy *** \n\n" ],
+        "ALLERGY_TITLE": [
+            "ALLERGIES\n\n",
+            "History of Allergies:\n"
+        ],
+        "ALLERGY_0": [
+            "The patient does not have any known allergies.",
+            "The patient reports no known allergies.", 
+            "No allergic reactions have been reported by the patient.",
+            "The patient has no recorded allergies in their medical history.",
+            "The patient has never experienced any allergic symptoms in the past.",
+            "The patient's medical record does not indicate any allergies.",
+            "The patient has never been diagnosed with any allergies.",
+            "No history of allergic reactions has been documented for this patient.",
+            "No allergy symptoms have been reported by the patient."
+        ],
+        "ALLERGY_1": [
+            "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:}. "
+        ],
+        "ALLERGY_N": {
+            "part_1": ["The patient reports multiple allergies including: "],
+            "part_2": [" {:DESCRIPTION:} which started {:ALLERGY_START:},"]
+        }
+    },
+    "sections": {
+        "DOCUMENT_HEADER": {
+            "frequency": "always"
+        },
+        "PATIENT": {
+            "frequency": "always",
+            "table": "SYNTHEA_PATIENT",
+            "sections": {
+                "PATIENT_DEMOGRAPHICS": {
+                    "frequency": "always",
+                    "title": "Patient:\n"
+                },
+                "FEMALE_PATIENT": {
+                    "frequency": "always",
+                    "when": ["{:GENDER:}","EQ","F"]
+                }
+            }
+        },
+        "ALLERGY": {
+            "frequency": "always",
+            "title": "ALLERGY_TITLE",
+            "table": "SYNTHEA_PATIENT_ALLERGY",
+            "join": ["PATIENT_ID"],
+            "sections": {
+                "ALLERGY_0": {
+                        "when": ["count","EQ",0]
+                },
+                "ALLERGY_1": {
+                        "when": ["count","EQ",1]
+                },
+                "ALLERGY_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "DOCUMENT_FOOTER": {
+            "frequency": "random"
+        }
+    }
+    
+}
