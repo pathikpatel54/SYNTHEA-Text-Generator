@@ -1,30 +1,24 @@
 from datetime import datetime
 import json
 import re
-import oracledb
+
 from random import randrange
 from dateutil.relativedelta import relativedelta
 from template import Template
+from database import Database
 
 inputFile = open("./input/templates.json")
 inputTemplate = json.load(inputFile)
 
 
 def main():
-    generateSections(connectDatabase())
+    template = Template("./input/templates.json")
+    db_host, db_sid = template.get_connection().get(
+        "DBHOST"), template.get_connection().get("DBSID")
+    database = Database(db_host, db_sid)
 
-
-def connectDatabase():
-    VARS = inputTemplate['vars']
-    db = f"""(DESCRIPTION =
-    (ADDRESS = (PROTOCOL = TCP)(HOST = {VARS['DBHOST']})(PORT = 1521))
-    (CONNECT_DATA =
-        (SID = {VARS["DBSID"]})
-    ))"""
-    connection = oracledb.connect(
-        user="pap325", password="ftSFH8N3t8S", dsn=db)
-    return connection
-
+    generateSections(database.get_connection())
+    
 
 def getTable(mainCursor, sectionName):
     tableName = inputTemplate.get('sections', {}).get(
@@ -72,8 +66,8 @@ def generateRecords(database, sections):
             for sectionRecord in sectionTableRecords[section]:
                 if sectionRecord.get(join) == mainTableRecord.get(join):
                     mainTableRecord[section].append(sectionRecord)
-            writeToOutput(getTemplate(mainTableRecord, sections), mainTableRecord[join])
-            
+            writeToOutput(getTemplate(mainTableRecord, sections),
+                          mainTableRecord[join])
 
 
 def getTemplate(record, sections):
@@ -157,9 +151,11 @@ def fillTemplateValues(template, values):
 
     return returnString
 
+
 def writeToOutput(string, name):
     outputFile = open(f"./output/{name}.txt", "w")
     outputFile.write(string)
     outputFile.close()
+
 
 main()

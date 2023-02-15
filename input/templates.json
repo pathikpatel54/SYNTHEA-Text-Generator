@@ -2,11 +2,16 @@
     "vars": {
         "DCT": "2021-05-18",
         "HOSPITAL_NAME": "Family Wellness Center",
-        "HOSPITAL_PHONE": "+1(222)333-4444",
-        "DBHOST": "oracle2.cci.drexel.edu",
-        "DBSID": "ORCL",
+        "HOSPITAL_PHONE": "+1(222)333-4444"
+    },
+    "mappings": {
         "GENDER" : {"F": "female", "M": "male"},
-        "MARITAL" : {"M": "married", "S": "single"}
+        "MARITAL" : {"M": "married", "S": "single"},
+        "BIRTHDATE" : "AGE"
+    },
+    "connection": {
+        "DBHOST": "oracle2.cci.drexel.edu",
+        "DBSID": "ORCL"
     },
     "templates": {
         "DOCUMENT_HEADER": [

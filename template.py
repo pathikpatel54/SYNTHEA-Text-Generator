@@ -6,11 +6,14 @@ class Template:
         with open(file_path, 'r') as f:
             self.json_data = json.load(f)
 
-    def get_vars(self):
-        return self.json_data['vars']
+    def get_vars(self) -> dict:
+        return self.json_data.get("vars", {})
+
+    def get_connection(self) -> dict:
+        return self.json_data.get("connection", {})
 
     def get_section(self, section_name):
-        return self.json_data['sections'].get(section_name, {})
+        return self.json_data.get("sections", {}).get(section_name, {})
 
     def get_table_name(self, section_name):
         return self.get_section(section_name).get('table')
