@@ -9,11 +9,27 @@ class Template:
     def get_vars(self) -> dict:
         return self.json_data.get("vars", {})
 
-    def get_connection(self) -> dict:
+    def get_connection_vars(self) -> dict:
         return self.json_data.get("connection", {})
 
+    def get_sections_items(self):
+        return self.json_data.get("sections", {}).items()
+
+    def get_header_section(self):
+        return list(filter(lambda x: "HEADER" in x[0], self.get_sections_items()))
+
+    def get_footer_section(self):
+        return list(filter(lambda x: "FOOTER" in x[0], self.get_sections_items()))
+
+    def get_data_sections(self):
+        return list(filter(lambda x: x[1].get("table", False) != False, self.get_sections_items()))
+
     def get_section(self, section_name):
+        return self.get_sections_items()
+
+    def get_tables(self, section_name):
         return self.json_data.get("sections", {}).get(section_name, {})
+
 
     def get_table_name(self, section_name):
         return self.get_section(section_name).get('table')
@@ -29,3 +45,12 @@ class Template:
 
     def get_templates(self):
         return self.json_data.get('templates', {})
+
+    def get_template(self, section_name):
+        return self.json_data.get('templates', {}).get(section_name, {})
+
+    def getMainTableIndex(self):
+        for section in range(len(self.get_data_sections())):
+            section_name = self.get_data_sections()[section][0]
+            if not self.json_data.get('sections', {}).get(section_name, {}).get("join"):
+                return section

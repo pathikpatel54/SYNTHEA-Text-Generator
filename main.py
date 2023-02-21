@@ -1,11 +1,11 @@
 from datetime import datetime
 import json
 import re
-
 from random import randrange
 from dateutil.relativedelta import relativedelta
 from template import Template
 from database import Database
+from generator import Generator
 
 inputFile = open("./input/templates.json")
 inputTemplate = json.load(inputFile)
@@ -13,12 +13,14 @@ inputTemplate = json.load(inputFile)
 
 def main():
     template = Template("./input/templates.json")
-    db_host, db_sid = template.get_connection().get(
-        "DBHOST"), template.get_connection().get("DBSID")
+
+    db_host, db_sid = template.get_connection_vars().get(
+        "DBHOST"), template.get_connection_vars().get("DBSID")
     database = Database(db_host, db_sid)
 
-    generateSections(database.get_connection())
-    
+    generator = Generator(template, database)
+    generator.generate_records()
+
 
 def getTable(mainCursor, sectionName):
     tableName = inputTemplate.get('sections', {}).get(

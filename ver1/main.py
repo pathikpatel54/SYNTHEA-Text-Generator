@@ -5,6 +5,7 @@ import oracledb
 from random import randrange
 from dateutil.relativedelta import relativedelta
 from template import Template
+from getpass import getpass
 
 inputFile = open("./input/templates.json")
 inputTemplate = json.load(inputFile)
@@ -15,14 +16,16 @@ def main():
 
 
 def connectDatabase():
-    VARS = inputTemplate['vars']
+    db_vars = inputTemplate.get('db')
     db = f"""(DESCRIPTION =
-    (ADDRESS = (PROTOCOL = TCP)(HOST = {VARS['DBHOST']})(PORT = 1521))
+    (ADDRESS = (PROTOCOL = TCP)(HOST = {db_vars['DBHOST']})(PORT = 1521))
     (CONNECT_DATA =
-        (SID = {VARS["DBSID"]})
+        (SID = {db_vars["DBSID"]})
     ))"""
+    user = input("DB User: ")
+    password = getpass("DB Password: ")
     connection = oracledb.connect(
-        user="pap325", password="ftSFH8N3t8S", dsn=db)
+        user="pap325", password=password, dsn=db)
     return connection
 
 
@@ -52,6 +55,25 @@ def generateSections(database):
     generateRecords(database, sections)
 
 
+def getHeaderTemplate():
+    items = inputTemplate['sections'].items()
+    for sectionName, value in items:
+        if "HEADER" in sectionName:
+            return inputTemplate.get('templates').get(sectionName)
+
+
+def generateHeader(headerTemplate):
+    returnString = ""
+    for match in re.findall("{:([A-Z_]+):}", headerTemplate[0]):
+        fieldValue = inputTemplate.get('vars').get(match)
+        headerTemplate[0] = headerTemplate[0].replace(
+            "{:" + match + ":}", fieldValue)
+
+    returnString += headerTemplate[0]
+    returnString += headerTemplate[randrange(1, len(headerTemplate))]
+    return returnString
+
+
 def getMainTableIndex(sections):
     for section in range(len(sections)):
         if not inputTemplate['sections'].get(sections[section], {}).get("join"):
@@ -72,8 +94,8 @@ def generateRecords(database, sections):
             for sectionRecord in sectionTableRecords[section]:
                 if sectionRecord.get(join) == mainTableRecord.get(join):
                     mainTableRecord[section].append(sectionRecord)
-            writeToOutput(getTemplate(mainTableRecord, sections), mainTableRecord[join])
-            
+            writeToOutput(getTemplate(mainTableRecord, sections),
+                          mainTableRecord[join])
 
 
 def getTemplate(record, sections):
@@ -144,9 +166,9 @@ def fillTemplateValues(template, values):
             if fieldValue is not None:
                 fieldValue = fieldValue.strftime(
                     '%m/%d/%Y') if isinstance(fieldValue, datetime) else fieldValue
-                if match in inputTemplate.get("vars").keys():
+                if match in inputTemplate.get("mappings").keys():
                     fieldValue = inputTemplate.get(
-                        "vars").get(match).get(fieldValue)
+                        "mappings").get(match).get(fieldValue)
                 modtemplate = modtemplate.replace(
                     "{:" + match + ":}", fieldValue)
 
@@ -157,9 +179,12 @@ def fillTemplateValues(template, values):
 
     return returnString
 
+
 def writeToOutput(string, name):
     outputFile = open(f"./output/{name}.txt", "w")
+    outputFile.write(generateHeader(getHeaderTemplate()))
     outputFile.write(string)
     outputFile.close()
+
 
 main()
