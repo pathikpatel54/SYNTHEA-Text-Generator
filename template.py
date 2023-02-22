@@ -50,7 +50,7 @@ class Template:
     def get_template(self, section_name):
         return self.json_data.get('templates', {}).get(section_name, {})
 
-    def getMainTableIndex(self):
+    def get_main_table_index(self):
         for section in range(len(self.get_data_sections())):
             section_name = self.get_data_sections()[section][0]
             if not self.json_data.get('sections', {}).get(section_name, {}).get("join"):

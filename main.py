@@ -18,9 +18,10 @@ def main():
     db_host, db_sid = template.get_connection(
         "DBHOST"), template.get_connection("DBSID")
     database = Database(db_host, db_sid)
-
     generator = Generator(template, database)
-    generator.generate_records()
+
+    for patient_record in generator.generate_patient_record():
+        print(patient_record)
 
 
 def getTable(mainCursor, sectionName):

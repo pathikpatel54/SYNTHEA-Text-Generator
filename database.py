@@ -14,13 +14,13 @@ class Database:
     def get_connection(self):
         return self.connection
 
-    def get_table_records(self, tableName):
+    def get_table_records(self, table_name):
         cursor = self.connection.cursor()
-        if tableName is None:
+        if table_name is None:
             print("Input file not structured correctly")
             return
         cursor.execute(
-            f"SELECT * FROM {tableName}")
+            f"SELECT * FROM {table_name}")
         columns = [col[0] for col in cursor.description]
         cursor.rowfactory = lambda *args: dict(zip(columns, args))
         for record in cursor:
