@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from template import Template
 from database import Database
 from generator import Generator
+from operator import itemgetter
 
 inputFile = open("./input/templates.json")
 inputTemplate = json.load(inputFile)
@@ -14,8 +15,8 @@ inputTemplate = json.load(inputFile)
 def main():
     template = Template("./input/templates.json")
 
-    db_host, db_sid = template.get_connection_vars().get(
-        "DBHOST"), template.get_connection_vars().get("DBSID")
+    db_host, db_sid = template.get_connection(
+        "DBHOST"), template.get_connection("DBSID")
     database = Database(db_host, db_sid)
 
     generator = Generator(template, database)
