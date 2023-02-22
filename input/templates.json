@@ -69,7 +69,7 @@
             "part_2": [" {:DESCRIPTION:} which started {:ALLERGY_START:},"]
         }
     },
-    "sections": {
+    "main": {
         "DOCUMENT_HEADER": {
             "frequency": "always"
         },

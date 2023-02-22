@@ -6,13 +6,13 @@ class Template:
         with open(file_path, 'r') as f:
             self.json_data = json.load(f)
 
-    def get_vars(self) -> dict:
-        return self.json_data.get("vars", {})
+    def get_var(self, var_name) -> dict:
+        return self.json_data.get("vars", {}).get(var_name)
 
-    def get_connection_vars(self) -> dict:
-        return self.json_data.get("connection", {})
+    def get_connection(self, var_name) -> dict:
+        return self.json_data.get("connection", {}).get(var_name)
 
-    def get_sections_items(self):
+    def get_sections(self):
         return self.json_data.get("sections", {}).items()
 
     def get_header_section(self):
@@ -25,11 +25,14 @@ class Template:
         return list(filter(lambda x: x[1].get("table", False) != False, self.get_sections_items()))
 
     def get_section(self, section_name):
-        return self.get_sections_items()
+        for section in self.get_sections_items():
+            sectionname, value = section
+            if sectionname == section_name:
+                print(value)
+                return value
 
     def get_tables(self, section_name):
         return self.json_data.get("sections", {}).get(section_name, {})
-
 
     def get_table_name(self, section_name):
         return self.get_section(section_name).get('table')

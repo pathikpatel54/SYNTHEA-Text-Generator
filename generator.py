@@ -17,6 +17,7 @@ class Generator:
         for section in self.template.get_data_sections():
             section_name, value = section
             table_name = self.template.get_table_name(section_name)
+            print(table_name)
             sub_sections = self.template.get_subsections(section_name)
             for sub_section in sub_sections.items():
                 print(sub_section[0])
