@@ -36,17 +36,14 @@ class Generator:
         section_title = ""
         for section, sub_name, value in sections:
             section_title, conditions = value.get(
-                "title"), value.get("when", [])
+                "title", random.choice(self.template.get_section_title(section))), value.get("when", [])
             sub_template = self.template.get_template(sub_name)
             section_details = record.get(section, record)
             if self.check_conditions(section_details, conditions) == False:
                 continue
             template_list = [sub_template] if isinstance(
                 sub_template, list) else sub_template.values()
-            if section_title is not None:
-                returnstring += section_title
-            # else:
-            #     returnstring += section_title
+            returnstring += section_title
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
                 returnstring += self.fill_template(sentence, section_details)
@@ -55,7 +52,7 @@ class Generator:
 
     def fill_template(self, template, values):
         values = values if isinstance(values, list) else [values]
-        result = ""
+        result = "" if re.findall("{:([A-Z_]+):}", template) else template
         for value in values:
             mod_template = template
             for match in re.findall("{:([A-Z_]+):}", mod_template):
@@ -75,6 +72,15 @@ class Generator:
             if mod_template not in result:
                 result += mod_template
         return result
+
+    def generate_patient_offset(self):
+        main_table_name = self.template.get_data_sections(
+        )[self.template.get_main_table_index()][1]["table"]
+        main_records = self.db.get_table_records(main_table_name)
+        for section_name, section_records in self.section_records.items():
+            join_column = self.template.get_join(section_name)[0]
+            for main_record in main_records:
+                yield {**main_record, section_name: [sr for sr in section_records if sr.get(join_column) == main_record.get(join_column)]}, join_column
 
     def check_conditions(self, record, conditions):
         if not conditions:

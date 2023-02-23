@@ -14,6 +14,8 @@ class Template:
 
     def get_section_title(self, section_name) -> dict:
         title = self.get_title(section_name)
+        if self.get_template(title) == [] or self.get_template(title) is None:
+            return [""]
         return self.get_template(title)
 
     def get_mappings(self) -> dict:
