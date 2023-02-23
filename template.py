@@ -12,6 +12,10 @@ class Template:
     def get_var(self, var_name) -> dict:
         return self.json_data.get("vars", {}).get(var_name)
 
+    def get_section_title(self, section_name) -> dict:
+        title = self.get_title(section_name)
+        return self.get_template(title)
+
     def get_mappings(self) -> dict:
         return self.json_data.get("mappings", {})
 

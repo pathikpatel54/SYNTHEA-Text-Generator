@@ -1,12 +1,8 @@
 from datetime import datetime
 import json
-import re
-from random import randrange
-from dateutil.relativedelta import relativedelta
 from template import Template
 from database import Database
 from generator import Generator
-from operator import itemgetter
 
 inputFile = open("./input/templates.json")
 inputTemplate = json.load(inputFile)
@@ -20,7 +16,6 @@ def main():
     database = Database(db_host, db_sid)
     generator = Generator(template, database)
 
-    # print(generator.generate_header())
     for patient_record, join_column in generator.generate_patient_record():
         output_string = generator.generate_header()
         output_string += generator.generate_patient_string(

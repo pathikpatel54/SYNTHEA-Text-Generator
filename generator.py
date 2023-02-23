@@ -39,18 +39,18 @@ class Generator:
                 "title"), value.get("when", [])
             sub_template = self.template.get_template(sub_name)
             section_details = record.get(section, record)
-
             if self.check_conditions(section_details, conditions) == False:
                 continue
-
             template_list = [sub_template] if isinstance(
                 sub_template, list) else sub_template.values()
-
+            if section_title is not None:
+                returnstring += section_title
+            else:
+                returnstring += section_title
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
                 returnstring += self.fill_template(sentence, section_details)
-        if section_title is not None:
-            returnstring += section_title
+
         return returnstring
 
     def fill_template(self, template, values):
