@@ -1,4 +1,3 @@
-from datetime import datetime
 import json
 from template import Template
 from database import Database
