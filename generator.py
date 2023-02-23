@@ -34,6 +34,7 @@ class Generator:
         sections = self.template.get_sections_list()
         returnstring = ""
         section_title = ""
+        offsets = {}
         for section, sub_name, value in sections:
             section_title, conditions = value.get(
                 "title", random.choice(self.template.get_section_title(section))), value.get("when", [])
@@ -46,11 +47,15 @@ class Generator:
             returnstring += section_title
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
-                returnstring += self.fill_template(sentence, section_details)
-
+                line = returnstring.count("\n") + 1
+                if len(section_details) == 0:
+                    offsets[section] = {"line": line, "column": "0"}
+                returnstring += self.fill_template(sentence,
+                                                   section_details, offsets, line)
+        print(offsets)
         return returnstring
 
-    def fill_template(self, template, values):
+    def fill_template(self, template, values, offsets, line):
         values = values if isinstance(values, list) else [values]
         result = "" if re.findall("{:([A-Z_]+):}", template) else template
         for value in values:
@@ -65,6 +70,8 @@ class Generator:
                         '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
                     field_value = self.template.get_mappings().get(
                         match, {}).get(field_value, field_value)
+                    column = mod_template.index("{:" + match + ":}") + 1
+                    offsets[match] = {"line": line, "column": column}
                     mod_template = mod_template.replace(
                         "{:" + match + ":}", field_value)
             match = re.findall("{:([A-Z_]+):}", mod_template)
