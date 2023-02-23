@@ -45,8 +45,8 @@ class Generator:
                 sub_template, list) else sub_template.values()
             if section_title is not None:
                 returnstring += section_title
-            else:
-                returnstring += section_title
+            # else:
+            #     returnstring += section_title
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
                 returnstring += self.fill_template(sentence, section_details)
@@ -57,21 +57,23 @@ class Generator:
         values = values if isinstance(values, list) else [values]
         result = ""
         for value in values:
-            modtemplate = template
-            for match in re.findall("{:([A-Z_]+):}", modtemplate):
-                fieldValue = value.get(match)
+            mod_template = template
+            for match in re.findall("{:([A-Z_]+):}", mod_template):
+                field_value = value.get(match)
                 if match == "AGE":
-                    fieldValue = str(relativedelta(
+                    field_value = str(relativedelta(
                         datetime.now(), value.get("BIRTHDATE")).years)
-                if fieldValue is not None:
-                    fieldValue = fieldValue.strftime(
-                        '%m/%d/%Y') if isinstance(fieldValue, datetime) else fieldValue
-                    fieldValue = self.template.get_mappings().get(
-                        match, {}).get(fieldValue, fieldValue)
-                    modtemplate = modtemplate.replace(
-                        "{:" + match + ":}", fieldValue)
-            if not re.findall("{:[A-Z_]+:}", modtemplate):
-                result += modtemplate
+                if field_value is not None:
+                    field_value = field_value.strftime(
+                        '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
+                    field_value = self.template.get_mappings().get(
+                        match, {}).get(field_value, field_value)
+                    mod_template = mod_template.replace(
+                        "{:" + match + ":}", field_value)
+            match = re.findall("{:([A-Z_]+):}", mod_template)
+            mod_template = "" if len(match) > 0 else mod_template
+            if mod_template not in result:
+                result += mod_template
         return result
 
     def check_conditions(self, record, conditions):
