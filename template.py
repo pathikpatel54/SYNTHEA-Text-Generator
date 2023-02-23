@@ -6,8 +6,14 @@ class Template:
         with open(file_path, 'r') as f:
             self.json_data = json.load(f)
 
+    def get_vars(self) -> dict:
+        return self.json_data.get("vars", {}).items()
+
     def get_var(self, var_name) -> dict:
         return self.json_data.get("vars", {}).get(var_name)
+
+    def get_mappings(self) -> dict:
+        return self.json_data.get("mappings", {})
 
     def get_connection(self, var_name) -> dict:
         return self.json_data.get("connection", {}).get(var_name)
