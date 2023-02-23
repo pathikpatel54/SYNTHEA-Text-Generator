@@ -20,8 +20,10 @@ def main():
     database = Database(db_host, db_sid)
     generator = Generator(template, database)
 
+    # generator.generate_footer()
+
     for patient_record in generator.generate_patient_record():
-        print(patient_record)
+        generator.generate_patient_string(patient_record)
 
 
 def getTable(mainCursor, sectionName):

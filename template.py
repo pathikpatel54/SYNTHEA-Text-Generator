@@ -1,5 +1,6 @@
 import json
 
+
 class Template:
     def __init__(self, file_path):
         with open(file_path, 'r') as f:
@@ -11,8 +12,20 @@ class Template:
     def get_connection(self, var_name) -> dict:
         return self.json_data.get("connection", {}).get(var_name)
 
-    def get_template(self, template_name) -> dict:
-        return self.json_data.get("templates", {}).get(template_name)
+    def get_templates(self):
+        return self.json_data.get('templates', {})
+
+    def get_template(self, section_name) -> dict:
+        return self.json_data.get("templates", {}).get(section_name)
+
+    def get_header_template(self):
+        return self.json_data.get("templates", {}).get(self.get_header_section()[0][0])
+
+    def get_footer_template(self):
+        return self.json_data.get("templates", {}).get(self.get_footer_section()[0][0])
+
+    def get_sections_list(self):
+        return [(section[0], item, value) for section in self.get_data_sections() for item, value in self.get_subsections(section[0]).items()]
 
     def get_sections_items(self):
         return self.json_data.get("main", {}).items()
@@ -40,18 +53,9 @@ class Template:
 
     def get_join(self, section_name):
         return self.get_section(section_name).get('join')
-    
+
     def get_subsections(self, section_name):
         return self.get_section(section_name).get('sections')
 
-    def get_templates(self):
-        return self.json_data.get('templates', {})
-
-    def get_template(self, section_name):
-        return self.json_data.get('templates', {}).get(section_name, {})
-
     def get_main_table_index(self):
-        for section in range(len(self.get_data_sections())):
-            section_name = self.get_data_sections()[section][0]
-            if not self.json_data.get('sections', {}).get(section_name, {}).get("join"):
-                return section
+        return next((i for i, section in enumerate(self.get_data_sections()) if not self.json_data.get('sections', {}).get(section[0], {}).get("join")), None)
