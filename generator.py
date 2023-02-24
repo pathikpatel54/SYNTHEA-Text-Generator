@@ -49,11 +49,12 @@ class Generator:
                 sentence = template[random.randrange(len(template))]
                 line = returnstring.count("\n") + 1
                 if len(section_details) == 0:
-                    offsets[section] = {"line": line, "column": "0"}
+                    column_e = 1 + len(sentence)
+                    offsets[section] = {"line": str(line),
+                                        "column": "1-" + str(column_e)}
                 returnstring += self.fill_template(sentence,
                                                    section_details, offsets, line)
-        print(offsets)
-        return returnstring
+        return returnstring, offsets
 
     def fill_template(self, template, values, offsets, line):
         values = values if isinstance(values, list) else [values]
@@ -70,8 +71,15 @@ class Generator:
                         '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
                     field_value = self.template.get_mappings().get(
                         match, {}).get(field_value, field_value)
-                    column = mod_template.index("{:" + match + ":}") + 1
-                    offsets[match] = {"line": line, "column": column}
+                    column_s = mod_template.index("{:" + match + ":}") + 1
+                    column_e = column_s + len(field_value)
+                    offset_o = {"line": str(line), "column": str(
+                                column_s) + "-" + str(column_e)}
+                    if offsets.get(match) is None:
+                        offsets[match] = offset_o
+                    else:
+                        offsets[match] = [offsets[match]]
+                        offsets[match].append(offset_o)
                     mod_template = mod_template.replace(
                         "{:" + match + ":}", field_value)
             match = re.findall("{:([A-Z_]+):}", mod_template)
