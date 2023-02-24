@@ -54,7 +54,7 @@ class Generator:
                                         "column": "1-" + str(column_e)}
                 returnstring += self.fill_template(sentence,
                                                    section_details, offsets, line)
-        return returnstring, offsets
+        return returnstring
 
     def fill_template(self, template, values, offsets, line):
         values = values if isinstance(values, list) else [values]
