@@ -18,7 +18,7 @@ def main():
     for patient_record, join_column in generator.generate_patient_record():
         output_string = generator.generate_header()
         output_string += generator.generate_patient_string(
-            patient_record)
+            patient_record)[0]
         output_string += generator.generate_footer()
         writeToOutput(output_string, patient_record.get(join_column))
 
