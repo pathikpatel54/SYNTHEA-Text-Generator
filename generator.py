@@ -44,9 +44,9 @@ class Generator:
             template_list = [sub_template] if isinstance(
                 sub_template, list) else sub_template.values()
             result += section_title
+            line = result.count("\n") + 1
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
-                line = result.count("\n") + 1
                 returns = self.fill_template(sentence,
                                              section_details, line, section)
 
@@ -77,7 +77,7 @@ class Generator:
                         '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
                     field_value = self.template.get_mappings().get(
                         match, {}).get(field_value, field_value)
-                    column = mod_template.index("{:" + match + ":}")
+                    column = mod_template.index("{:" + match + ":}") + 1
                     offset = {"offset": str(line) + "," +
                               str(column), "length": len(field_value)}
                     if flag == 0:
@@ -101,8 +101,8 @@ class Generator:
 
     def adjust_patient_offset(self, result, offset):
         sentences = result.split("\n")
-        count = [0]
         if len(sentences) > 0:
+            count = [len(sentences[-1])]
             for key, value in offset.items():
                 if isinstance(value, dict) and value.get("offset") is not None:
                     original_offset = value.get("offset")
@@ -125,6 +125,29 @@ class Generator:
         value["offset"] = original_line + \
             "," + str(new_column)
         count[0] += original_length
+        return value
+
+    def adjust_lineoffsets(self, output_string, offsets):
+        line = output_string.count("\n") + 1
+        for key, value in offsets.items():
+            if isinstance(value, dict) and value.get("offset") is not None:
+                original_offset = value.get("offset")
+                original_line = int(original_offset.split(",")[0])
+                original_column = original_offset.split(",")[1]
+                new_line = original_line + line - 1
+                offsets[key]["offset"] = str(new_line)+","+original_column
+            if isinstance(value, list):
+                offsets[key] = list(
+                    map(lambda p: self.map_lineoffsets(p, line), value))
+        return offsets
+
+    def map_lineoffsets(self, value, line):
+        original_offset = value.get("offset")
+        original_line = int(original_offset.split(",")[0])
+        original_column = original_offset.split(",")[1]
+        new_line = original_line + line - 1
+        value["offset"] = str(new_line) + \
+            "," + original_column
         return value
 
     def check_conditions(self, record, conditions):

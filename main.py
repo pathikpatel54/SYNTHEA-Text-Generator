@@ -17,16 +17,23 @@ def main():
 
     for patient_record, join_column in generator.generate_patient_record():
         output_string = generator.generate_header()
-        output_string += generator.generate_patient_string(
-            patient_record)[0]
+
+        output, offsets = generator.generate_patient_string(
+            patient_record)
+        offsets = generator.adjust_lineoffsets(output_string, offsets)
+        output_string += output
         output_string += generator.generate_footer()
-        writeToOutput(output_string, patient_record.get(join_column))
+        writeToOutput(output_string, patient_record.get(
+            join_column), json.dumps(offsets, indent=4))
 
 
-def writeToOutput(string, name):
+def writeToOutput(string, name, offsets):
     outputFile = open(f"./output/{name}.txt", "w")
     outputFile.write(string)
     outputFile.close()
+    offsetFile = open(f"./output/{name}.json", "w")
+    offsetFile.write(offsets)
+    offsetFile.close()
 
 
 main()
