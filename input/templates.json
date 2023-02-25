@@ -67,6 +67,28 @@
         "ALLERGY_N": {
             "part_1": ["The patient reports multiple allergies including: "],
             "part_2": ["{:DESCRIPTION:} which started {:ALLERGY_START:}, "]
+        },
+        "MEDICATION_TITLE": [
+            "\n\nMEDICATIONS:\n",
+            "\n\nHistory of Medications:\n"
+        ],
+        "MEDICATION_0": [
+            "The patient does not have any known allergies.",
+            "The patient reports no known allergies.", 
+            "No allergic reactions have been reported by the patient.",
+            "The patient has no recorded allergies in their medical history.",
+            "The patient has never experienced any allergic symptoms in the past.",
+            "The patient's medical record does not indicate any allergies.",
+            "The patient has never been diagnosed with any allergies.",
+            "No history of allergic reactions has been documented for this patient.",
+            "No allergy symptoms have been reported by the patient."
+        ],
+        "MEDICATION_1": [
+            "Patient began using {:DESCRIPTION:} on {:MEDICATION_START:} to be taken as needed for pain management. "
+        ],
+        "MEDICATION_N": {
+            "part_1": ["The patient reports multiple medications including: "],
+            "part_2": ["{:DESCRIPTION:} which started {:MEDICATION_START:}, "]
         }
     },
     "main": {
@@ -100,6 +122,23 @@
                         "when": ["count","EQ",1]
                 },
                 "ALLERGY_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "MEDICATION": {
+            "frequency": "always",
+            "title": "MEDICATION_TITLE",
+            "table": "SYNTHEA_PATIENT_MEDICATION",
+            "join": ["PATIENT_ID"],
+            "sections": {
+                "MEDICATION_0": {
+                        "when": ["count","EQ",0]
+                },
+                "MEDICATION_1": {
+                        "when": ["count","EQ",1]
+                },
+                "MEDICATION_N": {
                         "when": ["count","GT",1]
                 }
             }
