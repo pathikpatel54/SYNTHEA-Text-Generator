@@ -8,8 +8,18 @@ class Generator:
     def __init__(self, template, database):
         self.template = template
         self.db = database
-        self.section_records = {section[0]: list(self.db.get_table_records(section[1].get("table")))
-                                for section in self.template.get_data_sections()[1:]}
+        self.section_records = self.generate_section_records()
+
+    def generate_section_records(self):
+        data_sections = self.template.get_data_sections()[1:]
+        section_records = {}
+
+        for section in data_sections:
+            table_name = section[1].get("table")
+            table_records = list(self.db.get_table_records(table_name))
+            section_name = section[0]
+            section_records[section_name] = table_records
+        return section_records
 
     def generate_header(self):
         header = self.template.get_header_template()[0]
@@ -22,13 +32,18 @@ class Generator:
         return (self.template.get_footer_template())[0]
 
     def generate_patient_record(self):
-        main_table_name = self.template.get_data_sections(
-        )[self.template.get_main_table_index()][1]["table"]
+        main_table_name = self.template.get_main_table_name()
+        main_section_name = self.template.get_main_section_name()
+        main_join_column = self.template.get_join(main_section_name)[0]
         main_records = self.db.get_table_records(main_table_name)
-        for section_name, section_records in self.section_records.items():
-            join_column = self.template.get_join(section_name)[0]
-            for main_record in main_records:
-                yield {**main_record, section_name: [sr for sr in section_records if sr.get(join_column) == main_record.get(join_column)]}, join_column
+        for main_record in main_records:
+            for section_name, section_records in self.section_records.items():
+                main_record[section_name] = []
+                join_column = self.template.get_join(section_name)[0]
+                for section_record in section_records:
+                    if main_record[main_join_column] == section_record[join_column]:
+                        main_record[section_name].append(section_record)
+            yield main_record, main_join_column
 
     def generate_patient_string(self, record):
         sections = self.template.get_sections_list()

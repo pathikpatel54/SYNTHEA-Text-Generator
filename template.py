@@ -71,3 +71,9 @@ class Template:
 
     def get_main_table_index(self):
         return next((i for i, section in enumerate(self.get_data_sections()) if not self.json_data.get('sections', {}).get(section[0], {}).get("join")), None)
+
+    def get_main_section_name(self):
+        return self.get_data_sections()[self.get_main_table_index()][0]
+
+    def get_main_table_name(self):
+        return self.get_data_sections()[self.get_main_table_index()][1]["table"]

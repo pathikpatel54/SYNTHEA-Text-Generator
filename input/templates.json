@@ -61,12 +61,18 @@
             "No history of allergic reactions has been documented for this patient.",
             "No allergy symptoms have been reported by the patient."
         ],
-        "ALLERGY_1": [
-            "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:}. "
-        ],
+        "ALLERGY_1": {
+            "part_1" : [
+                "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:}"
+            ],
+            "part_2" : [
+                " and ended {:ALLERGY_STOP:}. "
+            ]
+        },
         "ALLERGY_N": {
             "part_1": ["The patient reports multiple allergies including: "],
-            "part_2": ["{:DESCRIPTION:} which started {:ALLERGY_START:}, "]
+            "part_2": ["{:DESCRIPTION:} which started {:ALLERGY_START:}, "],
+            "part_3": ["and ended {:ALLERGY_STOP:}, "]
         },
         "MEDICATION_TITLE": [
             "\n\nMEDICATIONS:\n",
@@ -98,6 +104,7 @@
         "PATIENT": {
             "frequency": "always",
             "table": "SYNTHEA_PATIENT",
+            "join": ["PATIENT_ID"],
             "sections": {
                 "PATIENT_DEMOGRAPHICS": {
                     "frequency": "always",
@@ -130,7 +137,7 @@
             "frequency": "always",
             "title": "MEDICATION_TITLE",
             "table": "SYNTHEA_PATIENT_MEDICATION",
-            "join": ["PATIENT_ID"],
+            "join": ["PATIENT"],
             "sections": {
                 "MEDICATION_0": {
                         "when": ["count","EQ",0]
