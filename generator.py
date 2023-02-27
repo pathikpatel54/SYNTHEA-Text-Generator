@@ -62,6 +62,8 @@ class Generator:
             line = result.count("\n") + 1
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
+                if isinstance(sentence, dict):
+                    sentence = sentence.get("part_1")[0] + sentence.get("part_2")[0]
                 returns = self.fill_template(sentence,
                                              section_details, line, section)
 

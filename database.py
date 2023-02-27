@@ -29,7 +29,6 @@ class Database:
             for record in cursor:
                 progress_bar.update(1)
                 yield record
-        print()
 
     def get_records_count(self, table_name):
         cursor = self.connection.cursor()

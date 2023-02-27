@@ -14,7 +14,6 @@ def main():
         template.get_main_table_name())
     generator = Generator(template, database)
     with tqdm(total=records_count, desc="Generating Patient output files") as progress_bar:
-        print()
         for patient_record, join_column in generator.generate_patient_record():
             output_string = generator.generate_header()
             output, offsets = generator.generate_patient_string(
@@ -36,4 +35,5 @@ def writeToOutput(string, name, offsets):
     offsetFile.close()
 
 
-main()
+if __name__ == '__main__':
+    main()

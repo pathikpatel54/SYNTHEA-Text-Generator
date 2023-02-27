@@ -7,7 +7,7 @@
     "mappings": {
         "GENDER" : {"F": "female", "M": "male"},
         "MARITAL" : {"M": "married", "S": "single"},
-        "BIRTHDATE" : "AGE"
+        "AGE" : {"AGE": "BIRTHDATE"}
     },
     "connection": {
         "DBHOST": "oracle2.cci.drexel.edu",
@@ -63,38 +63,29 @@
         ],
         "ALLERGY_1": {
             "part_1" : [
-                "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:}"
+                "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:},"
             ],
             "part_2" : [
-                " and ended {:ALLERGY_STOP:}. "
+                " and ended {:ALLERGY_STOP:}."
             ]
         },
         "ALLERGY_N": {
-            "part_1": ["The patient reports multiple allergies including: "],
-            "part_2": ["{:DESCRIPTION:} which started {:ALLERGY_START:}, "],
-            "part_3": ["and ended {:ALLERGY_STOP:}, "]
+            "onetime": ["The patient reports multiple allergies including: "],
+            "recurring": ["{:DESCRIPTION:} which started {:ALLERGY_START:}, "]
         },
         "MEDICATION_TITLE": [
             "\n\nMEDICATIONS:\n",
             "\n\nHistory of Medications:\n"
         ],
         "MEDICATION_0": [
-            "The patient does not have any known allergies.",
-            "The patient reports no known allergies.", 
-            "No allergic reactions have been reported by the patient.",
-            "The patient has no recorded allergies in their medical history.",
-            "The patient has never experienced any allergic symptoms in the past.",
-            "The patient's medical record does not indicate any allergies.",
-            "The patient has never been diagnosed with any allergies.",
-            "No history of allergic reactions has been documented for this patient.",
-            "No allergy symptoms have been reported by the patient."
+            "The patient does not have any history of medications."
         ],
         "MEDICATION_1": [
-            "Patient began using {:DESCRIPTION:} on {:MEDICATION_START:} to be taken as needed for pain management. "
+            "Patient began using {:DESCRIPTION:} on {:MEDICATION_START:}."
         ],
         "MEDICATION_N": {
-            "part_1": ["The patient reports multiple medications including: "],
-            "part_2": ["{:DESCRIPTION:} which started {:MEDICATION_START:}, "]
+            "onetime": ["The patient reports history of multiple medications: "],
+            "recurring": ["{:DESCRIPTION:} which started {:MEDICATION_START:}, "]
         }
     },
     "main": {
