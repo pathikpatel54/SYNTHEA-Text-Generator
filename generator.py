@@ -61,11 +61,13 @@ class Generator:
             result += section_title
             line = result.count("\n") + 1
             for template in template_list:
+                wordscount = len(result)
                 sentence = template[random.randrange(len(template))]
                 if isinstance(sentence, dict):
-                    sentence = sentence.get("part_1")[0] + sentence.get("part_2")[0]
+                    sentence = sentence.get(
+                        "part_1")[0] + sentence.get("part_2")[0]
                 returns = self.fill_template(sentence,
-                                             section_details, line, section)
+                                             section_details, line, section, wordscount)
 
                 offset = self.adjust_patient_offset(result, returns[1])
                 if returns[1] == {} and returns[0] != "" and section_details == []:
@@ -77,7 +79,7 @@ class Generator:
                 result += returns[0]
         return result, offsets
 
-    def fill_template(self, template, values, line, section):
+    def fill_template(self, template, values, line, section, wordscount):
         flag = 1 if isinstance(values, list) else 0
         values = values if isinstance(values, list) else [values]
         result = "" if re.findall("{:([A-Z_]+):}", template) else template
