@@ -60,26 +60,26 @@ class Generator:
                 sub_template, list) else sub_template.values()
             result += section_title
             line = result.count("\n") + 1
+            wordscount = len(result)
             for template in template_list:
-                wordscount = len(result)
                 sentence = template[random.randrange(len(template))]
                 if isinstance(sentence, dict):
                     sentence = sentence.get(
                         "part_1")[0] + sentence.get("part_2")[0]
                 returns = self.fill_template(sentence,
-                                             section_details, line, section, wordscount)
+                                             section_details, section, wordscount)
 
                 offset = self.adjust_patient_offset(result, returns[1])
                 if returns[1] == {} and returns[0] != "" and section_details == []:
                     offset = {section: {
-                        "offset": str(line)+",1",
+                        "offset": str(wordscount),
                         "length": len(returns[0])
                     }}
                 offsets.update(offset)
                 result += returns[0]
         return result, offsets
 
-    def fill_template(self, template, values, line, section, wordscount):
+    def fill_template(self, template, values, section, wordscount):
         flag = 1 if isinstance(values, list) else 0
         values = values if isinstance(values, list) else [values]
         result = "" if re.findall("{:([A-Z_]+):}", template) else template
@@ -96,9 +96,9 @@ class Generator:
                         '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
                     field_value = self.template.get_mappings().get(
                         match, {}).get(field_value, field_value)
-                    column = mod_template.index("{:" + match + ":}") + 1
-                    offset = {"offset": str(line) + "," +
-                              str(column), "length": len(field_value)}
+                    column = mod_template.index("{:" + match + ":}")
+                    offset = {"offset": str(
+                        column + wordscount), "length": len(field_value)}
                     if flag == 0:
                         offset_object[match] = offset
                     mod_template = mod_template.replace(
@@ -108,8 +108,8 @@ class Generator:
             if mod_template not in result:
                 result += mod_template
             if flag == 1:
-                offset = {"offset": str(line) + "," +
-                          str(1), "length": len(mod_template)}
+                offset = {"offset": str(wordscount),
+                          "length": len(mod_template)}
                 if offset_object.get(section) is None:
                     offset_object[section] = offset
                 else:
@@ -125,11 +125,8 @@ class Generator:
             for key, value in offset.items():
                 if isinstance(value, dict) and value.get("offset") is not None:
                     original_offset = value.get("offset")
-                    original_line = original_offset.split(",")[0]
-                    original_column = int(original_offset.split(",")[1])
-                    new_column = original_column + len(sentences[-1])
-                    offset[key]["offset"] = original_line + \
-                        "," + str(new_column)
+                    new_offset = int(original_offset) + len(sentences[-1])
+                    offset[key]["offset"] = str(new_offset)
                 if isinstance(value, list):
                     offset[key] = list(
                         map(lambda p: self.map_offsets(p, count), value))
@@ -138,35 +135,27 @@ class Generator:
     def map_offsets(self, value, count):
         original_offset = value.get("offset")
         original_length = int(value.get("length"))
-        original_line = original_offset.split(",")[0]
-        original_column = int(original_offset.split(",")[1])
-        new_column = original_column + count[0]
-        value["offset"] = original_line + \
-            "," + str(new_column)
+        new_offset = int(original_offset) + count[0]
+        value["offset"] = str(new_offset)
         count[0] += original_length
         return value
 
     def adjust_lineoffsets(self, output_string, offsets):
-        line = output_string.count("\n") + 1
+        words = len(output_string)
         for key, value in offsets.items():
             if isinstance(value, dict) and value.get("offset") is not None:
                 original_offset = value.get("offset")
-                original_line = int(original_offset.split(",")[0])
-                original_column = original_offset.split(",")[1]
-                new_line = original_line + line - 1
-                offsets[key]["offset"] = str(new_line)+","+original_column
+                new_offset = int(original_offset) + words
+                offsets[key]["offset"] = str(new_offset)
             if isinstance(value, list):
                 offsets[key] = list(
-                    map(lambda p: self.map_lineoffsets(p, line), value))
+                    map(lambda p: self.map_lineoffsets(p, words), value))
         return offsets
 
-    def map_lineoffsets(self, value, line):
+    def map_lineoffsets(self, value, words):
         original_offset = value.get("offset")
-        original_line = int(original_offset.split(",")[0])
-        original_column = original_offset.split(",")[1]
-        new_line = original_line + line - 1
-        value["offset"] = str(new_line) + \
-            "," + original_column
+        new_offset = int(original_offset) + words
+        value["offset"] = str(new_offset)
         return value
 
     def check_conditions(self, record, conditions):
