@@ -64,19 +64,30 @@ class Generator:
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
                 if isinstance(sentence, dict):
-                    sentence = sentence.get(
-                        "part_1")[0] + sentence.get("part_2")[0]
-                returns = self.fill_template(sentence,
+                    for senval in sentence.values():
+                        returns = self.fill_template(senval[random.randrange(len(senval))],
                                              section_details, section, wordscount)
 
-                offset = self.adjust_patient_offset(result, returns[1])
-                if returns[1] == {} and returns[0] != "" and section_details == []:
-                    offset = {section: {
-                        "offset": str(wordscount),
-                        "length": len(returns[0])
-                    }}
-                offsets.update(offset)
-                result += returns[0]
+                        offset = self.adjust_patient_offset(result, returns[1])
+                        if returns[1] == {} and returns[0] != "" and section_details == []:
+                            offset = {section: {
+                                "offset": str(wordscount),
+                                "length": len(returns[0])
+                            }}
+                        offsets.update(offset)
+                        result += returns[0]
+                else:
+                    returns = self.fill_template(sentence,
+                                                section_details, section, wordscount)
+
+                    offset = self.adjust_patient_offset(result, returns[1])
+                    if returns[1] == {} and returns[0] != "" and section_details == []:
+                        offset = {section: {
+                            "offset": str(wordscount),
+                            "length": len(returns[0])
+                        }}
+                    offsets.update(offset)
+                    result += returns[0]
         return result, offsets
 
     def fill_template(self, template, values, section, wordscount):
