@@ -70,11 +70,47 @@
             ]
         },
         "ALLERGY_N": {
-            "onetime": ["The patient reports multiple allergies including: "],
+            "onetime": ["The patient reports multiple allergies including:"],
             "recurring": [{
-                "part_1" : ["{:DESCRIPTION:} which started {:ALLERGY_START:},"],
-                "part_2" : [" and ended {:ALLERGY_STOP:}. "]
+                "part_1" : [" {:DESCRIPTION:} which started {:ALLERGY_START:},"],
+                "part_2" : [" and ended {:ALLERGY_STOP:}."]
             }]
+        },
+        "MEDICATION_TITLE": [
+            "\n\nMEDICATIONS:\n",
+            "\n\nHistory of Medications:\n"
+        ],
+        "MEDICATION_0": [
+            "The patient does not have any history of medications."
+        ],
+        "MEDICATION_1": {
+            "part_1" : [
+                "The patient reports a history of {:DESCRIPTION:} which began {:MEDICATION_START:},"
+            ],
+            "part_2" : [
+                " and ended {:MEDICATION_STOP:}."
+            ]
+        },
+        "MEDICATION_N": {
+            "onetime": ["The patient reports history of multiple medications:"],
+            "recurring": [{
+                "part_1" : [" {:DESCRIPTION:} which started {:MEDICATION_START:},"],
+                "part_2" : [" and ended {:MEDICATION_STOP:}."]
+            }]
+        },
+        "IMMUNIZATION_TITLE": [
+            "\n\nIMMUNIZATIONS:\n",
+            "\n\nHistory of Immunizations:\n"
+        ],
+        "IMMUNIZATION_0": [
+            "The patient does not have any history of Immunizations."
+        ],
+        "IMMUNIZATION_1": [
+            "The patient reports a history of {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"
+        ],
+        "IMMUNIZATION_N": {
+            "onetime": ["The patient reports history of multiple immunizations:"],
+            "recurring": [" {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"]
         }
     },
     "main": {
@@ -109,6 +145,40 @@
                         "when": ["count","EQ",1]
                 },
                 "ALLERGY_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "MEDICATION": {
+            "frequency": "always",
+            "title": "MEDICATION_TITLE",
+            "table": "SYNTHEA_PATIENT_MEDICATION",
+            "join": ["PATIENT"],
+            "sections": {
+                "MEDICATION_0": {
+                        "when": ["count","EQ",0]
+                },
+                "MEDICATION_1": {
+                        "when": ["count","EQ",1]
+                },
+                "MEDICATION_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "IMMUNIZATION": {
+            "frequency": "always",
+            "title": "IMMUNIZATION_TITLE",
+            "table": "SYNTHEA_PATIENT_IMMUNIZATION",
+            "join": ["PATIENT"],
+            "sections": {
+                "IMMUNIZATION_0": {
+                        "when": ["count","EQ",0]
+                },
+                "IMMUNIZATION_1": {
+                        "when": ["count","EQ",1]
+                },
+                "IMMUNIZATION_N": {
                         "when": ["count","GT",1]
                 }
             }

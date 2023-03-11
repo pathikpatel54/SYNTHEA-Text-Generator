@@ -3,6 +3,7 @@ from template import Template
 from database import Database
 from generator import Generator
 from tqdm import tqdm
+import os
 
 
 def main():
@@ -27,6 +28,8 @@ def main():
 
 
 def writeToOutput(string, name, offsets):
+    if not os.path.exists("./output"):
+        os.makedirs("./output")
     outputFile = open(f"./output/{name}.txt", "w")
     outputFile.write(string)
     outputFile.close()

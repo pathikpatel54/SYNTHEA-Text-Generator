@@ -59,75 +59,78 @@ class Generator:
             template_list = [sub_template] if isinstance(
                 sub_template, list) else sub_template.values()
             result += section_title
-            line = result.count("\n") + 1
             wordscount = len(result)
             for template in template_list:
                 sentence = template[random.randrange(len(template))]
-                if isinstance(sentence, dict):
-                    for senval in sentence.values():
-                        returns = self.fill_template(senval[random.randrange(len(senval))],
+                returns = self.fill_template(sentence,
                                              section_details, section, wordscount)
 
-                        offset = self.adjust_patient_offset(result, returns[1])
-                        if returns[1] == {} and returns[0] != "" and section_details == []:
-                            offset = {section: {
-                                "offset": str(wordscount),
-                                "length": len(returns[0])
-                            }}
-                        offsets.update(offset)
-                        result += returns[0]
-                else:
-                    returns = self.fill_template(sentence,
-                                                section_details, section, wordscount)
-
-                    offset = self.adjust_patient_offset(result, returns[1])
-                    if returns[1] == {} and returns[0] != "" and section_details == []:
-                        offset = {section: {
-                            "offset": str(wordscount),
-                            "length": len(returns[0])
-                        }}
+                offset = self.adjust_patient_offset(result, returns[1])
+                if returns[1] == {} and returns[0] != "" and section_details == []:
+                    offset = {section: {
+                        "offset": wordscount,
+                        "length": len(returns[0])
+                    }}
+                if offsets.get(section) is None or isinstance(offsets.get(section), list):
                     offsets.update(offset)
-                    result += returns[0]
+                else:
+                    offsets[section]["length"] = offsets[section]["length"] + \
+                        len(returns[0])
+                result += returns[0]
         return result, offsets
 
-    def fill_template(self, template, values, section, wordscount):
+    def fill_template(self, templates, values, section, wordscount):
         flag = 1 if isinstance(values, list) else 0
         values = values if isinstance(values, list) else [values]
-        result = "" if re.findall("{:([A-Z_]+):}", template) else template
+        final_result = templates if isinstance(templates, str) and not re.findall(
+            "{:([A-Z_]+):}", templates) else ""
+        templates = [templates] if isinstance(
+            templates, str) else templates.values()
         offset_object = {}
         for value in values:
-            mod_template = template
-            for match in re.findall("{:([A-Z_]+):}", mod_template):
-                field_value = value.get(match)
-                if match == "AGE":
-                    field_value = str(relativedelta(
-                        datetime.now(), value.get("BIRTHDATE")).years)
-                if field_value is not None:
-                    field_value = field_value.strftime(
-                        '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
-                    field_value = self.template.get_mappings().get(
-                        match, {}).get(field_value, field_value)
-                    column = mod_template.index("{:" + match + ":}")
-                    offset = {"offset": str(
-                        column + wordscount), "length": len(field_value)}
-                    if flag == 0:
-                        offset_object[match] = offset
-                    mod_template = mod_template.replace(
-                        "{:" + match + ":}", field_value)
-            match = re.findall("{:([A-Z_]+):}", mod_template)
-            mod_template = "" if len(match) > 0 else mod_template
-            if mod_template not in result:
-                result += mod_template
+            final_template = ""
+            for template in templates:
+                template = template if isinstance(
+                    template, str) else template[random.randrange(len(template))]
+                result = "" if re.findall(
+                    "{:([A-Z_]+):}", template) else template
+                mod_template = template
+                for match in re.findall("{:([A-Z_]+):}", mod_template):
+                    field_value = value.get(match)
+                    if match == "AGE":
+                        field_value = str(relativedelta(
+                            datetime.now(), value.get("BIRTHDATE")).years)
+                    if field_value is not None:
+                        field_value = field_value.strftime(
+                            '%m/%d/%Y') if isinstance(field_value, datetime) else field_value
+                        field_value = self.template.get_mappings().get(
+                            match, {}).get(field_value, field_value)
+                        column = mod_template.index("{:" + match + ":}")
+                        offset = {"offset": column + wordscount,
+                                  "length": len(field_value)}
+                        if flag == 0:
+                            offset_object[match] = offset
+                        mod_template = mod_template.replace(
+                            "{:" + match + ":}", field_value)
+                match = re.findall("{:([A-Z_]+):}", mod_template)
+                mod_template = "" if len(match) > 0 else mod_template
+                final_template += mod_template
+            if final_template not in result:
+                result += final_template
             if flag == 1:
-                offset = {"offset": str(wordscount),
-                          "length": len(mod_template)}
+                offset = {"offset": wordscount,
+                          "length": len(final_template)}
                 if offset_object.get(section) is None:
                     offset_object[section] = offset
                 else:
                     if isinstance(offset_object[section], dict):
                         offset_object[section] = [offset_object[section]]
                     offset_object[section].append(offset)
-        return result, offset_object
+            if result not in final_result:
+                final_result += result
+            if len(final_result) > 0 and final_result[-1] == ",":
+                final_result = final_result[:-1] + "."
+        return final_result, offset_object
 
     def adjust_patient_offset(self, result, offset):
         sentences = result.split("\n")
@@ -137,7 +140,7 @@ class Generator:
                 if isinstance(value, dict) and value.get("offset") is not None:
                     original_offset = value.get("offset")
                     new_offset = int(original_offset) + len(sentences[-1])
-                    offset[key]["offset"] = str(new_offset)
+                    offset[key]["offset"] = new_offset
                 if isinstance(value, list):
                     offset[key] = list(
                         map(lambda p: self.map_offsets(p, count), value))
@@ -147,7 +150,7 @@ class Generator:
         original_offset = value.get("offset")
         original_length = int(value.get("length"))
         new_offset = int(original_offset) + count[0]
-        value["offset"] = str(new_offset)
+        value["offset"] = new_offset
         count[0] += original_length
         return value
 
@@ -157,7 +160,7 @@ class Generator:
             if isinstance(value, dict) and value.get("offset") is not None:
                 original_offset = value.get("offset")
                 new_offset = int(original_offset) + words
-                offsets[key]["offset"] = str(new_offset)
+                offsets[key]["offset"] = new_offset
             if isinstance(value, list):
                 offsets[key] = list(
                     map(lambda p: self.map_lineoffsets(p, words), value))
@@ -166,7 +169,7 @@ class Generator:
     def map_lineoffsets(self, value, words):
         original_offset = value.get("offset")
         new_offset = int(original_offset) + words
-        value["offset"] = str(new_offset)
+        value["offset"] = new_offset
         return value
 
     def check_conditions(self, record, conditions):
