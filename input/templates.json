@@ -185,6 +185,30 @@
                 "part_1" : [" {:DESCRIPTION:} which started {:CAREPLAN_START:},"],
                 "part_2" : [" and ended {:CAREPLAN_STOP:}."]
             }]
+        },
+        "CONDITIONS_TITLE": [
+            "\n\nCONDITIONS:\n",
+            "\n\nHistory of Conditions:\n"
+        ],
+        "CONDITION_0": [
+            "The patient does not have any history of Conditions."
+        ],
+        "CONDITION_1": {
+            "part_1" : [
+                "The patient reports a history of {:DESCRIPTION:} which started on {:CONDITIONS_START:}."
+            ],
+            "part_2" : [
+                " and ended {:CONDITIONS_STOP:}."
+            ]
+        },
+        "CONDITION_N": {
+            "onetime": [
+                "As per the patient's medical history, they have had various conditions, including:"
+            ],
+            "recurring": [{
+                "part_1" : [" {:DESCRIPTION:} which started {:CONDITIONS_START:},"],
+                "part_2" : [" and ended {:CONDITIONS_STOP:}."]
+            }]
         }
     },
     "main": {
@@ -304,6 +328,23 @@
                         "when": ["count","EQ",1]
                 },
                 "CAREPLAN_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "CONDITIONS": {
+            "frequency": "always",
+            "title": "CONDITIONS_TITLE",
+            "table": "SYNTHEA_PATIENT_CONDITIONS",
+            "join": ["PATIENT"],
+            "sections": {
+                "CONDITION_0": {
+                        "when": ["count","EQ",0]
+                },
+                "CONDITION_1": {
+                        "when": ["count","EQ",1]
+                },
+                "CONDITION_N": {
                         "when": ["count","GT",1]
                 }
             }
