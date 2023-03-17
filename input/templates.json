@@ -25,16 +25,16 @@
         ],
         "PATIENT_DEMOGRAPHICS": {
             "part_1": [
-                "{:FIRST:} {:LAST:} is a {:AGE:}-year-old {:GENDER:} residing at {:ADDRESS:} {:CITY:}",
-                "{:FIRST:} {:LAST:}, who is {:AGE:} years old, is a {:GENDER:} living at {:ADDRESS:} {:CITY:}",
-                "{:FIRST:} {:LAST:} is a {:GENDER:} of {:AGE:} who lives at {:ADDRESS:} {:CITY:}",
-                "{:FIRST:} {:LAST:}, a {:GENDER:} of {:AGE:}, resides at {:ADDRESS:} {:CITY:}",
-                "{:AGE:}-year-old {:GENDER:} named {:FIRST:} {:LAST:} lives at {:ADDRESS:} {:CITY:}",
-                "The patient, {:FIRST:} {:LAST:}, is a {:AGE:}-year-old {:GENDER:} who lives at {:ADDRESS:} {:CITY:}",
-                "{:FIRST:} {:LAST:}, a {:AGE:}-year-old {:GENDER:}, resides at {:ADDRESS:} {:CITY:}",
-                "{:FIRST:} {:LAST:}, {:AGE:} years old and a {:GENDER:}, lives at {:ADDRESS:} {:CITY:}",
-                "{:AGE:}-year-old {:GENDER:} named {:FIRST:} {:LAST:} lives at {:ADDRESS:} {:CITY:}",
-                "{:FIRST:} {:LAST:}, a {:GENDER:}, is {:AGE:} years old and resides at {:ADDRESS:} {:CITY:}"
+                "{:FIRST_NAME:} {:LAST_NAME:} is a {:AGE:}-year-old {:GENDER:} residing at {:ADDRESS:} {:CITY:}",
+                "{:FIRST_NAME:} {:LAST_NAME:}, who is {:AGE:} years old {:GENDER:} living at {:ADDRESS:} {:CITY:}",
+                "{:FIRST_NAME:} {:LAST_NAME:} is a {:GENDER:} of {:AGE:} who lives at {:ADDRESS:} {:CITY:}",
+                "{:FIRST_NAME:} {:LAST_NAME:}, a {:GENDER:} of {:AGE:}, resides at {:ADDRESS:} {:CITY:}",
+                "{:AGE:}-year-old {:GENDER:} named {:FIRST_NAME:} {:LAST_NAME:} lives at {:ADDRESS:} {:CITY:}",
+                "The patient, {:FIRST_NAME:} {:LAST_NAME:}, is a {:AGE:}-year-old {:GENDER:} who lives at {:ADDRESS:} {:CITY:}",
+                "{:FIRST_NAME:} {:LAST_NAME:}, a {:AGE:}-year-old {:GENDER:}, resides at {:ADDRESS:} {:CITY:}",
+                "{:FIRST_NAME:} {:LAST_NAME:}, {:AGE:} years old and a {:GENDER:}, lives at {:ADDRESS:} {:CITY:}",
+                "{:AGE:}-year-old {:GENDER:} named {:FIRST_NAME:} {:LAST_NAME:} lives at {:ADDRESS:} {:CITY:}",
+                "{:FIRST_NAME:} {:LAST_NAME:}, a {:GENDER:}, is {:AGE:} years old and resides at {:ADDRESS:} {:CITY:}"
             ],
             "part_2": [
                 ". Their marital status is {:MARITAL:}",
@@ -52,8 +52,6 @@
         ],
         "ALLERGY_0": [
             "The patient does not have any known allergies.",
-            "The patient reports no known allergies.", 
-            "No allergic reactions have been reported by the patient.",
             "The patient has no recorded allergies in their medical history.",
             "The patient has never experienced any allergic symptoms in the past.",
             "The patient's medical record does not indicate any allergies.",
@@ -88,18 +86,26 @@
             "\n\nHistory of Medications:\n"
         ],
         "MEDICATION_0": [
-            "The patient does not have any history of medications."
+            "The patient does not have any history of medications.",
+            "The patient has not been prescribed any medications before.",
+            "The patient's medical history does not include any previous use of medications.",
+            "There is no record of the patient having taken any medications previously."
+
         ],
         "MEDICATION_1": {
             "part_1" : [
-                "The patient reports a history of {:DESCRIPTION:} which began {:MEDICATION_START:},"
+                "The patient reports a history of {:DESCRIPTION:} which began {:MEDICATION_START:},",
+                "The patient's medical record indicates that {:DESCRIPTION:} was started on {:MEDICATION_START:}"
             ],
             "part_2" : [
                 " and ended {:MEDICATION_STOP:}."
             ]
         },
         "MEDICATION_N": {
-            "onetime": ["The patient reports history of multiple medications:"],
+            "onetime": ["The patient reports history of multiple medications:",
+                "The patient reports a history of taking various medications:",
+                "The patient's medical record indicates a history of taking multiple medications:"
+        ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:MEDICATION_START:},"],
                 "part_2" : [" and ended {:MEDICATION_STOP:}."]
@@ -110,7 +116,10 @@
             "\n\nHistory of Immunizations:\n"
         ],
         "IMMUNIZATION_0": [
-            "The patient does not have any history of Immunizations."
+            "The patient does not have any history of Immunizations.",
+            "According to the patient's medical history, they have not received any immunizations.",
+            "The patient has not received any immunizations, as reported in their medical records.",
+            "There is no record of the patient receiving any immunizations in their medical history."
         ],
         "IMMUNIZATION_1": [
             "The patient reports a history of {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"
