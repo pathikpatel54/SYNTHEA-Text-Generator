@@ -203,7 +203,7 @@
         },
         "CONDITION_N": {
             "onetime": [
-                "As per the patient's medical history, they have had various conditions, including:"
+                "As per the patient's medical history, they have had various conditions in past, including:"
             ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:CONDITIONS_START:},"],
