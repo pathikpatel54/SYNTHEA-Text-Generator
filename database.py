@@ -17,7 +17,7 @@ class Database:
 
     def get_table_records(self, table_name):
         records_count = self.get_records_count(table_name)
-        with tqdm(total=records_count, desc=f"Fetching records from {table_name}\n") as progress_bar:
+        with tqdm(total=records_count, desc=f"Fetching records from {table_name}") as progress_bar:
             cursor = self.connection.cursor()
             if table_name is None:
                 print("Input file not structured correctly")

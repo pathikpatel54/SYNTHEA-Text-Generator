@@ -107,7 +107,9 @@ class Generator:
                             match, {}).get(field_value, field_value)
                         column = mod_template.index("{:" + match + ":}")
                         offset = {"offset": column + wordscount,
-                                  "length": len(field_value)}
+                                  "length": len(field_value),
+                                  "value": field_value
+                                  }
                         if flag == 0:
                             offset_object[match] = offset
                         mod_template = mod_template.replace(

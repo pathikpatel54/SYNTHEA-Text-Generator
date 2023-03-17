@@ -5,7 +5,6 @@ from generator import Generator
 from tqdm import tqdm
 import os
 
-
 def main():
     template = Template("./input/templates.json")
     db_host, db_sid = template.get_connection(

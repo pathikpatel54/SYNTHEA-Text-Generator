@@ -63,14 +63,21 @@
         ],
         "ALLERGY_1": {
             "part_1" : [
-                "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:},"
+                "The patient reports a history of {:DESCRIPTION:} which began {:ALLERGY_START:},",
+                "The patient has a past medical history of {:DESCRIPTION:} that started {:ALLERGY_START:}.",
+                "The patient reports a history of {:DESCRIPTION:} that began {:ALLERGY_START:}."
             ],
             "part_2" : [
-                " and ended {:ALLERGY_STOP:}."
+                " and ended {:ALLERGY_STOP:}.",
+                " and stopped {:ALLERGY_STOP:}."
             ]
         },
         "ALLERGY_N": {
-            "onetime": ["The patient reports multiple allergies including:"],
+            "onetime": [
+                "The patient has a record of allergic reactions to several substances, such as:",
+                "The patient record mentions allergic reactions to multiple substances, which include:",
+                "According to the record, patient has a history of several allergies, which include:"
+            ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:ALLERGY_START:},"],
                 "part_2" : [" and ended {:ALLERGY_STOP:}."]
@@ -111,6 +118,34 @@
         "IMMUNIZATION_N": {
             "onetime": ["The patient reports history of multiple immunizations:"],
             "recurring": [" {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"]
+        },
+        "PROCEDURE_TITLE": [
+            "\n\nPROCEDURE:\n",
+            "\n\nHistory of Procedures:\n"
+        ],
+        "PROCEDURE_0": [
+            "The patient does not have any history of Procedures."
+        ],
+        "PROCEDURE_1": [
+            "The patient reports a history of {:DESCRIPTION:} which was performed on {:PROCEDURE_DATE:},"
+        ],
+        "PROCEDURE_N": {
+            "onetime": ["The patient reports history of multiple procedures:"],
+            "recurring": [" {:DESCRIPTION:} which was given on {:PROCEDURE_DATE:},"]
+        },
+        "IMAGING_STUDY_TITLE": [
+            "\n\nIMAGING STUDY:\n",
+            "\n\nHistory of Imaging Study:\n"
+        ],
+        "IMAGING_STUDY_0": [
+            "The patient does not have any history of Imaging studies."
+        ],
+        "IMAGING_STUDY_1": [
+            "The patient reports a history of {:DESCRIPTION:} which was performed on {:IMAGING_STUDY_DATE:},"
+        ],
+        "IMAGING_STUDY_N": {
+            "onetime": ["The patient reports history of multiple imaging studies:"],
+            "recurring": [" {:DESCRIPTION:} which was performed on {:IMAGING_STUDY_DATE:},"]
         }
     },
     "main": {
@@ -179,6 +214,40 @@
                         "when": ["count","EQ",1]
                 },
                 "IMMUNIZATION_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "PROCEDURE": {
+            "frequency": "always",
+            "title": "PROCEDURE_TITLE",
+            "table": "SYNTHEA_PATIENT_PROCEDURE",
+            "join": ["PATIENT"],
+            "sections": {
+                "PROCEDURE_0": {
+                        "when": ["count","EQ",0]
+                },
+                "PROCEDURE_1": {
+                        "when": ["count","EQ",1]
+                },
+                "PROCEDURE_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "IMAGING_STUDY": {
+            "frequency": "always",
+            "title": "IMAGING_STUDY_TITLE",
+            "table": "SYNTHEA_PATIENT_IMAGING_STUDY",
+            "join": ["PATIENT"],
+            "sections": {
+                "IMAGING_STUDY_0": {
+                        "when": ["count","EQ",0]
+                },
+                "IMAGING_STUDY_1": {
+                        "when": ["count","EQ",1]
+                },
+                "IMAGING_STUDY_N": {
                         "when": ["count","GT",1]
                 }
             }
