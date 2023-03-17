@@ -122,10 +122,14 @@
             "There is no record of the patient receiving any immunizations in their medical history."
         ],
         "IMMUNIZATION_1": [
-            "The patient reports a history of {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"
+            "The patient reports a history of {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},",
+            "The patient's medical record indicates that {:DESCRIPTION:} was administered on {:MEDICATION_START:}"
         ],
         "IMMUNIZATION_N": {
-            "onetime": ["The patient reports history of multiple immunizations:"],
+            "onetime": [
+                "The patient reports history of multiple immunizations:",
+                "The patient reports a history of taking various immunizations:"
+        ],
             "recurring": [" {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"]
         },
         "PROCEDURE_TITLE": [
@@ -133,7 +137,9 @@
             "\n\nHistory of Procedures:\n"
         ],
         "PROCEDURE_0": [
-            "The patient does not have any history of Procedures."
+            "The patient does not have any history of Procedures.",
+            "According to the patient's medical records, they have not undergone any procedures.",
+            "The patient has not had any procedures performed, as reported in their medical history."
         ],
         "PROCEDURE_1": [
             "The patient reports a history of {:DESCRIPTION:} which was performed on {:PROCEDURE_DATE:},"
