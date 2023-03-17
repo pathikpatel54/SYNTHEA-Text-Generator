@@ -161,6 +161,30 @@
         "IMAGING_STUDY_N": {
             "onetime": ["The patient reports history of multiple imaging studies:"],
             "recurring": [" {:DESCRIPTION:} which was performed on {:IMAGING_STUDY_DATE:},"]
+        },
+        "CAREPLANS_TITLE": [
+            "\n\nCAREPLANS:\n",
+            "\n\nHistory of Careplans:\n"
+        ],
+        "CAREPLAN_0": [
+            "The patient does not have any history of Imaging studies."
+        ],
+        "CAREPLAN_1": {
+            "part_1" : [
+                "The patient reports a history of {:DESCRIPTION:} for which a care plan was initiated on {:CAREPLAN_START:}."
+            ],
+            "part_2" : [
+                " and ended {:CAREPLAN_STOP:}."
+            ]
+        },
+        "CAREPLAN_N": {
+            "onetime": [
+                "As per the patient's medical history, they have had various care plans, including:"
+            ],
+            "recurring": [{
+                "part_1" : [" {:DESCRIPTION:} which started {:CAREPLAN_START:},"],
+                "part_2" : [" and ended {:CAREPLAN_STOP:}."]
+            }]
         }
     },
     "main": {
@@ -263,6 +287,23 @@
                         "when": ["count","EQ",1]
                 },
                 "IMAGING_STUDY_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        },
+        "CAREPLANS": {
+            "frequency": "always",
+            "title": "CAREPLANS_TITLE",
+            "table": "SYNTHEA_PATIENT_CAREPLAN",
+            "join": ["PATIENT"],
+            "sections": {
+                "CAREPLAN_0": {
+                        "when": ["count","EQ",0]
+                },
+                "CAREPLAN_1": {
+                        "when": ["count","EQ",1]
+                },
+                "CAREPLAN_N": {
                         "when": ["count","GT",1]
                 }
             }
