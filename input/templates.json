@@ -209,6 +209,30 @@
                 "part_1" : [" {:DESCRIPTION:} which started {:CONDITIONS_START:},"],
                 "part_2" : [" and ended {:CONDITIONS_STOP:}."]
             }]
+        },
+        "DEVICES_TITLE": [
+            "\n\nDEVICES:\n",
+            "\n\nHistory of devices:\n"
+        ],
+        "DEVICES_0": [
+            "The patient does not have any history of devices."
+        ],
+        "DEVICES_1": {
+            "part_1" : [
+                "The patient reports a history of {:DESCRIPTION:} which started on {:DEVICES_START:}."
+            ],
+            "part_2" : [
+                " and ended {:DEVICES_STOP:}."
+            ]
+        },
+        "DEVICES_N": {
+            "onetime": [
+                "As per the patient's medical history, they have had various devices in past, including:"
+            ],
+            "recurring": [{
+                "part_1" : [" {:DESCRIPTION:} which started {:DEVICES_START:},"],
+                "part_2" : [" and ended {:DEVICES_STOP:}."]
+            }]
         }
     },
     "main": {
@@ -345,6 +369,23 @@
                         "when": ["count","EQ",1]
                 },
                 "CONDITION_N": {
+                        "when": ["count","GT",1]
+                }
+            }
+        }, 
+        "DEVICES": {
+            "frequency": "always",
+            "title": "DEVICES_TITLE",
+            "table": "SYNTHEA_PATIENT_DEVICES",
+            "join": ["PATIENT"],
+            "sections": {
+                "DEVICES_0": {
+                        "when": ["count","EQ",0]
+                },
+                "DEVICES_1": {
+                        "when": ["count","EQ",1]
+                },
+                "DEVICES_N": {
                         "when": ["count","GT",1]
                 }
             }
