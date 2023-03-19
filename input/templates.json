@@ -102,7 +102,8 @@
             ]
         },
         "MEDICATION_N": {
-            "onetime": ["The patient reports history of multiple medications:",
+            "onetime": [
+                "The patient reports history of multiple medications:",
                 "The patient reports a history of taking various medications:",
                 "The patient's medical record indicates a history of taking multiple medications:"
         ],
@@ -215,23 +216,23 @@
             "\n\nHistory of devices:\n"
         ],
         "DEVICES_0": [
-            "The patient does not have any history of devices."
+            "The patient's medical history does not indicate use of any devices."
         ],
         "DEVICES_1": {
             "part_1" : [
-                "The patient reports a history of {:DESCRIPTION:} which started on {:DEVICES_START:}."
+                "The patient has history of being treated with {:DESCRIPTION:} in past, from {:DEVICES_START:}."
             ],
             "part_2" : [
-                " and ended {:DEVICES_STOP:}."
+                " to {:DEVICES_STOP:}."
             ]
         },
         "DEVICES_N": {
             "onetime": [
-                "As per the patient's medical history, they have had various devices in past, including:"
+                "As per the patient's medical history, they have used multiple devices in past, including:"
             ],
             "recurring": [{
-                "part_1" : [" {:DESCRIPTION:} which started {:DEVICES_START:},"],
-                "part_2" : [" and ended {:DEVICES_STOP:}."]
+                "part_1" : [" {:DESCRIPTION:} from {:DEVICES_START:}.,"],
+                "part_2" : [" to {:DEVICES_STOP:}."]
             }]
         }
     },
@@ -246,7 +247,7 @@
             "sections": {
                 "PATIENT_DEMOGRAPHICS": {
                     "frequency": "always",
-                    "title": "Patient:\n"
+                    "title": "Patient's Demographic Information:\n"
                 },
                 "FEMALE_PATIENT": {
                     "frequency": "always",
