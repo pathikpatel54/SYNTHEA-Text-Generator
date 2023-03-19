@@ -74,7 +74,9 @@
             "onetime": [
                 "The patient has a record of allergic reactions to several substances, such as:",
                 "The patient record mentions allergic reactions to multiple substances, which include:",
-                "According to the record, patient has a history of several allergies, which include:"
+                "According to the record, patient has a history of several allergies, which include:",
+                "The patient has a list of substances they are allergic to, including:",
+                "There are multiple substances that the patient has had allergic reactions to, such as:"
             ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:ALLERGY_START:},"],
@@ -89,23 +91,27 @@
             "The patient does not have any history of medications.",
             "The patient has not been prescribed any medications before.",
             "The patient's medical history does not include any previous use of medications.",
-            "There is no record of the patient having taken any medications previously."
-
+            "There is no record of the patient having taken any medications previously.",
+            "The patient's medical records show no evidence of medication use."
         ],
         "MEDICATION_1": {
             "part_1" : [
                 "The patient reports a history of {:DESCRIPTION:} which began {:MEDICATION_START:},",
-                "The patient's medical record indicates that {:DESCRIPTION:} was started on {:MEDICATION_START:}"
+                "The patient's medical record indicates that {:DESCRIPTION:} was started on {:MEDICATION_START:}",
+                "According to the patient's medical record, {:DESCRIPTION:} was initiated on {:MEDICATION_START:}.",
+                "The patient's medical record states that {:DESCRIPTION:} was begun on {:MEDICATION_START:}."
             ],
             "part_2" : [
-                " and ended {:MEDICATION_STOP:}."
+                " and ended {:MEDICATION_STOP:}.",
+                " and stopped {:MEDICATION_STOP:}."
             ]
         },
         "MEDICATION_N": {
             "onetime": [
                 "The patient reports history of multiple medications:",
                 "The patient reports a history of taking various medications:",
-                "The patient's medical record indicates a history of taking multiple medications:"
+                "The patient's medical record indicates a history of taking multiple medications:",
+                "As per the patient's report, they have used multiple medications in the past:"
         ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:MEDICATION_START:},"],
@@ -120,18 +126,26 @@
             "The patient does not have any history of Immunizations.",
             "According to the patient's medical history, they have not received any immunizations.",
             "The patient has not received any immunizations, as reported in their medical records.",
-            "There is no record of the patient receiving any immunizations in their medical history."
+            "There is no record of the patient receiving any immunizations in their medical history.",
+            "The patient has no prior history of immunizations."
         ],
         "IMMUNIZATION_1": [
             "The patient reports a history of {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},",
-            "The patient's medical record indicates that {:DESCRIPTION:} was administered on {:MEDICATION_START:}"
+            "The patient's medical record indicates that {:DESCRIPTION:} was administered on {:IMMUNIZATION_DATE:}",
+            "According to the patient's history, they have been immunized with {:DESCRIPTION:} on {:IMMUNIZATION_DATE:}.",
+            "The patient has a history of receiving {:DESCRIPTION:} on {:IMMUNIZATION_DATE:}, according to their report."
         ],
         "IMMUNIZATION_N": {
             "onetime": [
                 "The patient reports history of multiple immunizations:",
-                "The patient reports a history of taking various immunizations:"
+                "The patient reports a history of taking various immunizations:",
+                "As per the patient's report, they have received multiple immunizations in the past:",
+                "According to the patient's history, they have been given multiple immunizations:"
         ],
-            "recurring": [" {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},"]
+            "recurring": [
+                " {:DESCRIPTION:} which was given on {:IMMUNIZATION_DATE:},",
+                " {:DESCRIPTION:} which was administered on {:IMMUNIZATION_DATE:},"
+        ]
         },
         "PROCEDURE_TITLE": [
             "\n\nPROCEDURE:\n",
@@ -140,27 +154,48 @@
         "PROCEDURE_0": [
             "The patient does not have any history of Procedures.",
             "According to the patient's medical records, they have not undergone any procedures.",
-            "The patient has not had any procedures performed, as reported in their medical history."
+            "The patient has not had any procedures performed, as reported in their medical history.",
+            "According to the patient's medical history, there are no records of them having undergone any procedures.",
+            "The patient has not undergone any procedures as per their medical history."
         ],
         "PROCEDURE_1": [
-            "The patient reports a history of {:DESCRIPTION:} which was performed on {:PROCEDURE_DATE:},"
+            "The patient reports a history of {:DESCRIPTION:} which was performed on {:PROCEDURE_DATE:},",
+            "Medical records indicate that the patient underwent {:DESCRIPTION:} on {:PROCEDURE_DATE:}.",
+            "{:DESCRIPTION:} was the procedure the patient underwent, and it was performed on {:PROCEDURE_DATE:}, according to their medical history.",
+            "{:PROCEDURE_DATE:} marks the day the patient had {:DESCRIPTION:}, according to their medical history."
         ],
         "PROCEDURE_N": {
-            "onetime": ["The patient reports history of multiple procedures:"],
-            "recurring": [" {:DESCRIPTION:} which was given on {:PROCEDURE_DATE:},"]
+            "onetime": [
+                "The patient reports history of multiple procedures:",
+                "The patient reports undergoing multiple medical procedures over time:",
+                "The healthcare provider reports that the patient had a history of multiple procedures:"
+        ],
+            "recurring": [" {:DESCRIPTION:} which was received on {:PROCEDURE_DATE:},"]
         },
         "IMAGING_STUDY_TITLE": [
             "\n\nIMAGING STUDY:\n",
             "\n\nHistory of Imaging Study:\n"
         ],
         "IMAGING_STUDY_0": [
-            "The patient does not have any history of Imaging studies."
+            "The patient does not have any history of Imaging studies.",
+            "Based on the patient's medical history, there is no record of any previous imaging studies.",
+            "According to the patient's history, there is no record of any imaging studies being conducted.",
+            "Based on the medical records, the patient has not undergone any imaging studies.",
+            "The patient has no record of any imaging studies being performed, according to their medical history."
         ],
         "IMAGING_STUDY_1": [
-            "The patient reports a history of {:DESCRIPTION:} which was performed on {:IMAGING_STUDY_DATE:},"
+            "The patient reports a history of {:DESCRIPTION:} which was performed on {:IMAGING_STUDY_DATE:},",
+            "According to the patient's records, they underwent {:DESCRIPTION:} on {:IMAGING_STUDY_DATE:},",
+            "The patient's medical history indicates that they had {:DESCRIPTION:} on {:IMAGING_STUDY_DATE:},",
+            "The patient reports having undergone {:DESCRIPTION:} on {:IMAGING_STUDY_DATE:},"
         ],
         "IMAGING_STUDY_N": {
-            "onetime": ["The patient reports history of multiple imaging studies:"],
+            "onetime": [
+                "The patient has had various imaging studies in the past:",
+                "As per the patient's medical records, they have undergone multiple imaging studies.",
+                "The patient reports a history of undergoing several imaging studies.",
+                "The patient has undergone various imaging studies."
+            ],
             "recurring": [" {:DESCRIPTION:} which was performed on {:IMAGING_STUDY_DATE:},"]
         },
         "CAREPLANS_TITLE": [
@@ -168,19 +203,30 @@
             "\n\nHistory of Careplans:\n"
         ],
         "CAREPLAN_0": [
-            "The patient does not have any history of Imaging studies."
+            "The patient does not have any history of receiving any careplans in past.",
+            "According to the patient, they have not received any care plans in the past.",
+            "The patient has reported no previous care plans in their medical history.",
+            "The patient's medical records do not indicate any history of care plans being initiated."
         ],
         "CAREPLAN_1": {
             "part_1" : [
-                "The patient reports a history of {:DESCRIPTION:} for which a care plan was initiated on {:CAREPLAN_START:}."
+                "The patient reports a history of {:DESCRIPTION:} for which a care plan was initiated on {:CAREPLAN_START:}.",
+                "The patient reports that a care plan was started on {:CAREPLAN_START:} for {:DESCRIPTION:}.",
+                "As per the patient's report, a care plan was initiated on {:CAREPLAN_START:} for {:DESCRIPTION:}.",
+                "The patient has reported a history of {:DESCRIPTION:} for which a care plan was started on {:CAREPLAN_START:}.",
+                "The patient's report indicates that a care plan was started on {:CAREPLAN_START:} for the treatment of {:DESCRIPTION:}."
             ],
             "part_2" : [
-                " and ended {:CAREPLAN_STOP:}."
+                " and ended {:CAREPLAN_STOP:}.",
+                " and stopped {:CAREPLAN_STOP:}."
             ]
         },
         "CAREPLAN_N": {
             "onetime": [
-                "As per the patient's medical history, they have had various care plans, including:"
+                "As per the patient's medical history, they have had various care plans, including:",
+                "According to the patient's medical records, they have had various care plans, such as:",
+                "The patient's history indicates that they have received care plans for various health issues, such as:",
+                "The patient's medical history shows that they have been on different care plans, which include:"
             ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:CAREPLAN_START:},"],
@@ -192,19 +238,32 @@
             "\n\nHistory of Conditions:\n"
         ],
         "CONDITION_0": [
-            "The patient does not have any history of Conditions."
+            "The patient has a clean medical history with no documented conditions.",
+            "The patient does not have any history of Conditions.",
+            "The patient has no history of medical issues or conditions.",
+            "The patient's medical history shows no evidence of any past medical conditions.",
+            "The patient has reported no previous medical conditions in their medical history."
         ],
         "CONDITION_1": {
             "part_1" : [
-                "The patient reports a history of {:DESCRIPTION:} which started on {:CONDITIONS_START:}."
+                "The patient reports a history of {:DESCRIPTION:} which started on {:CONDITIONS_START:}.",
+                "The patient reports experiencing {:DESCRIPTION:} since {:CONDITIONS_START:}.",
+                "The patient states that they have a history of {:DESCRIPTION:} which started on {:CONDITIONS_START:}.",
+                "The patient's medical history includes a record of experiencing {:DESCRIPTION:} which started on {:CONDITIONS_START:}."
             ],
             "part_2" : [
-                " and ended {:CONDITIONS_STOP:}."
+                " and ended {:CONDITIONS_STOP:}.",
+                " and stopped on {:CONDITIONS_STOP:}."
             ]
         },
         "CONDITION_N": {
             "onetime": [
-                "As per the patient's medical history, they have had various conditions in past, including:"
+                "As per the patient's medical history, they have had various conditions in past, including:",
+                "According to the patient's medical records, they have had various conditions in the past, such as:",
+                "The patient's medical records show that they have been diagnosed with multiple conditions, which include:",
+                "As per the patient's medical records, they have had different health issues in the past, including:",
+                "The patient has a history of experiencing multiple conditions, which include:",
+                "The patient's medical history indicates that they have experienced several conditions in the past:"
             ],
             "recurring": [{
                 "part_1" : [" {:DESCRIPTION:} which started {:CONDITIONS_START:},"],
@@ -216,11 +275,18 @@
             "\n\nHistory of devices:\n"
         ],
         "DEVICES_0": [
-            "The patient's medical history does not indicate use of any devices."
+            "The patient does not have a history of using medical devices.",
+            "The patient's medical history does not indicate use of any devices.",
+            "As per the patient's medical records, there is no recorded history of them using any devices.",
+            "The patient has reported no previous use of medical devices in their medical history.",
+            "The patient's medical records do not indicate any history of them using any medical devices."
         ],
         "DEVICES_1": {
             "part_1" : [
-                "The patient has history of being treated with {:DESCRIPTION:} in past, from {:DEVICES_START:}."
+                "As per the patient's medical records, a {:DESCRIPTION:} device was incorporated in their treatment plan to manage their condition starting from {:DEVICES_START:}",
+                "The patient's treatment involved the use of a {:DESCRIPTION:} to manage their condition, from {:DEVICES_START:}",
+                "The patient's medical history indicates that a {:DESCRIPTION:} device was used in their treatment to manage their condition from {:DEVICES_START:}",
+                "The patient was prescribed a {:DESCRIPTION:} device for their treatment, which was used to manage their condition starting from {:DEVICES_START:}"
             ],
             "part_2" : [
                 " to {:DEVICES_STOP:}."

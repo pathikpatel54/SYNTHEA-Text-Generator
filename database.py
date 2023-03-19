@@ -1,5 +1,6 @@
 import oracledb
 from tqdm import tqdm
+from getpass import getpass
 
 
 class Database:
@@ -9,8 +10,10 @@ class Database:
         (CONNECT_DATA =
             (SID = {sid})
         ))"""
+        dbuser = input("Enter DB Username: ")
+        dbpass = getpass(prompt='Enter DB Password: ')
         self.connection = oracledb.connect(
-            user="pap325", password="ftSFH8N3t8S", dsn=db)
+            user=dbuser, password=dbpass, dsn=db)
 
     def get_connection(self):
         return self.connection
